@@ -24,11 +24,23 @@ function playRound(playerSelection = "rock", computerSelection = getComputerChoi
 }
 
 function game() {
+    let playerScore = 0;
+    let computerScore = 0;
+
     for (let i = 0; i < 5; i++) {
         let playerSelection = prompt("Choose rock, paper or scissors!");
         let computerSelection = getComputerChoices();
 
         let result = playRound(playerSelection, computerSelection);
+
+        if (result.includes("win")) {
+            playerScore++;
+        }
+        else if (result.includes("lost")) {
+            computerScore++;
+        }
+
+        result += ` ${playerScore}-${computerScore}`;
         console.log(result);
     }
 }
