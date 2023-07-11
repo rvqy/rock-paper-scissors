@@ -33,8 +33,13 @@ function game() {
 
     for (let i = 0; i < 5; i++) {
         let playerSelection = prompt("Choose rock, paper or scissors!");
-        let computerSelection = getComputerChoices();
+        
+        while (!shapes.includes(playerSelection.toLowerCase())) {
+            console.log("Invalid shape!");
+            playerSelection = prompt("Choose rock, paper or scissors!");
+        }
 
+        let computerSelection = getComputerChoices();
         let result = playRound(playerSelection, computerSelection);
 
         if (result.includes("win")) {
