@@ -23,5 +23,14 @@ function playRound(playerSelection = "rock", computerSelection = getComputerChoi
     return message;
 }
 
+function game() {
+    for (let i = 0; i < 5; i++) {
+        let playerSelection = prompt("Choose rock, paper or scissors!");
+        let computerSelection = getComputerChoices();
 
+        let result = playRound(playerSelection, computerSelection);
+        console.log(result);
+    }
+}
 
+game();
