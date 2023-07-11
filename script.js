@@ -4,7 +4,7 @@ function getComputerChoices() {
     return shapes[(Math.floor(Math.random() * shapes.length))];
 }
 
-function playRound(playerSelection = "rock", computerSelection = getComputerChoices()) {
+function playRound(playerSelection, computerSelection) {
     playerSelection = playerSelection.toLowerCase();
     let message = "";
 
@@ -13,14 +13,18 @@ function playRound(playerSelection = "rock", computerSelection = getComputerChoi
         (playerSelection === "paper" && computerSelection === "rock") ||
         (playerSelection === "scissors" && computerSelection === "paper")
     ) {
-        message = `You win! ${playerSelection} beats ${computerSelection}!`;
+        message = `You win! ${capitalizeFirstLetter(playerSelection)} beats ${computerSelection}!`;
     } else if (playerSelection === computerSelection) {
         message = "Tie!";
     } else {
-        message = `You lost! ${computerSelection} beats ${playerSelection}.`;
+        message = `You lost! ${capitalizeFirstLetter(computerSelection)} beats ${playerSelection}.`;
     }
 
     return message;
+}
+
+function capitalizeFirstLetter(string) {
+    return string = string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 function game() {
@@ -45,11 +49,11 @@ function game() {
     }
 
     if (playerScore > computerScore) {
-        console.log("You win the game!")
+        console.log("You win the game!");
     } else if (playerScore < computerScore) {
-        console.log("You lose the game!")
+        console.log("You lose the game!");
     } else {
-        console.log("It's a tie!")
+        console.log("It's a tie!");
     }
 }
 
