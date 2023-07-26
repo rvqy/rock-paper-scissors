@@ -1,65 +1,103 @@
-const shapes = ["rock", "paper", "scissors"];
+const SHAPES = ["rock", "paper", "scissors"];
 
-function getComputerChoices() {
-    return shapes[(Math.floor(Math.random() * shapes.length))];
+let roundResult = "";
+let playerScore = 0;
+let computerScore = 0;
+
+const buttons = document.querySelectorAll("button");
+buttons.forEach(button => button.addEventListener("click", game));
+
+function game() {
+  const playerChoice = this.innerText;
+  const computerChoice = getComputerChoice();
+
+  roundResult = playRound(playerChoice, computerChoice);
+  console.log(roundResult);
+
+  if (roundResult === "win") {
+    playerScore++;
+  } else if (roundResult === "lose") {
+    computerScore++;
+  }
+
+  updateResult(playerScore, computerScore);
+
+  if (playerScore === 5 || computerScore === 5) {
+    handleGameEnd();
+  }
+}
+
+function getComputerChoice() {
+    return SHAPES[Math.floor(Math.random() * SHAPES.length)];
 }
 
 function playRound(playerSelection, computerSelection) {
     playerSelection = playerSelection.toLowerCase();
-    let message = "";
-
+  
     if (
-        (playerSelection === "rock" && computerSelection === "scissors") ||
-        (playerSelection === "paper" && computerSelection === "rock") ||
-        (playerSelection === "scissors" && computerSelection === "paper")
+      (playerSelection === "rock" && computerSelection === "scissors") ||
+      (playerSelection === "paper" && computerSelection === "rock") ||
+      (playerSelection === "scissors" && computerSelection === "paper")
     ) {
-        message = `You win! ${capitalizeFirstLetter(playerSelection)} beats ${computerSelection}!`;
+      roundResult = "win";
     } else if (playerSelection === computerSelection) {
-        message = "Tie!";
+      roundResult = "tie";
     } else {
-        message = `You lost! ${capitalizeFirstLetter(computerSelection)} beats ${playerSelection}.`;
+      roundResult = "lose";
     }
+  
+    return roundResult;
+}
+  
+function handleGameEnd() {
+  const gameResult = document.querySelector(".round-result");
+  if (playerScore === 5) {
+    gameResult.innerText = "You won the game!";
+  } else {
+    gameResult.innerText = "You lost the game!";
+  }
 
-    return message;
+  buttons.forEach(button => button.removeEventListener("click", game));
+
+  let resetButton = document.querySelector(".reset-button");
+  if (!resetButton) {
+    resetButton = document.createElement("button");
+    resetButton.classList.add("reset-button");
+    resetButton.innerText = "Reset";
+    document.body.appendChild(resetButton);
+  }
+
+  resetButton.addEventListener("click", resetGame);
 }
 
-function capitalizeFirstLetter(string) {
-    return string = string.charAt(0).toUpperCase() + string.slice(1);
+function resetGame() {
+  roundResult = "";
+  playerScore = 0;
+  computerScore = 0;
+  updateResult(playerScore, computerScore);
+  const gameResult = document.querySelector(".round-result");
+  gameResult.innerText = "";
+
+  buttons.forEach(button => button.addEventListener("click", game));
+  const resetButton = document.querySelector(".reset-button");
+  if (resetButton) {
+    document.body.removeChild(resetButton);
+  }
 }
 
-function game() {
-    let playerScore = 0;
-    let computerScore = 0;
-
-    for (let i = 0; i < 5; i++) {
-        let playerSelection = prompt("Choose rock, paper or scissors!");
-        
-        while (!shapes.includes(playerSelection.toLowerCase())) {
-            console.log("Invalid shape!");
-            playerSelection = prompt("Choose rock, paper or scissors!");
-        }
-
-        let computerSelection = getComputerChoices();
-        let result = playRound(playerSelection, computerSelection);
-
-        if (result.includes("win")) {
-            playerScore++;
-        }
-        else if (result.includes("lost")) {
-            computerScore++;
-        }
-
-        result += ` ${playerScore}-${computerScore}`;
-        console.log(result);
-    }
-
-    if (playerScore > computerScore) {
-        console.log("You win the game!");
-    } else if (playerScore < computerScore) {
-        console.log("You lose the game!");
-    } else {
-        console.log("It's a tie!");
-    }
+function updateResult(playerScore, computerScore) {
+  const playerResult = document.querySelector(".player-score");
+  playerResult.innerText = `Player: ${playerScore}`;
+  playerResult.nextElementSibling.innerText = `Computer: ${computerScore}`;
 }
 
-game();
+
+
+
+
+
+
+
+
+
+
