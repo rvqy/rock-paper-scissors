@@ -4,11 +4,11 @@ let roundResult = "";
 let playerScore = 0;
 let computerScore = 0;
 
-const buttons = document.querySelectorAll("button");
+const buttons = document.querySelectorAll("img");
 buttons.forEach(button => button.addEventListener("click", game));
 
 function game() {
-  const playerChoice = this.innerText;
+  const playerChoice = this.getAttribute('class');
   const computerChoice = getComputerChoice();
 
   roundResult = playRound(playerChoice, computerChoice);
@@ -59,12 +59,13 @@ function handleGameEnd() {
 
   buttons.forEach(button => button.removeEventListener("click", game));
 
+  let roundResultDiv = document.querySelector(".round-result");
   let resetButton = document.querySelector(".reset-button");
   if (!resetButton) {
     resetButton = document.createElement("button");
     resetButton.classList.add("reset-button");
     resetButton.innerText = "Reset";
-    document.body.appendChild(resetButton);
+    roundResultDiv.appendChild(resetButton);
   }
 
   resetButton.addEventListener("click", resetGame);
@@ -87,8 +88,15 @@ function resetGame() {
 
 function updateResult(playerScore, computerScore) {
   const playerResult = document.querySelector(".player-score");
-  playerResult.innerText = `Player: ${playerScore}`;
-  playerResult.nextElementSibling.innerText = `Computer: ${computerScore}`;
+  const computerResult = document.querySelector(".computer-score");
+  const roundMessage = document.querySelector(".round-result");
+  playerResult.innerText = `PLAYER ${playerScore}`;
+  computerResult.innerText = `COMPUTER ${computerScore}`;
+  if (roundResult === "win" || roundResult === "lose") {
+    roundMessage.innerText = `You ${roundResult} this round!`;
+  } else {
+    roundMessage.innerText = "It's a tie!";
+  }
 }
 
 
